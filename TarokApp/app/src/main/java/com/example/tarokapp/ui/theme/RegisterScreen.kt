@@ -1,4 +1,7 @@
-package com.example.tarokapp
+package com.example.tarokapp.ui.theme
+
+import com.example.tarokapp.LoginState
+import com.example.tarokapp.LoginViewModel
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,15 +19,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun LoginScreen(
-    onLoginSuccess: (String) -> Unit, // Function parameter to pass the token back
-    onRegisterClick: () -> Unit,
-    onBack: () -> Unit,              // Function to handle "Back" button
-    loginViewModel: LoginViewModel = viewModel() // ViewModel instance
+fun RegisterScreen(
+    onRegisterSuccess: (String) -> Unit,
+    onBack: () -> Unit
 ) {
-    // Observe the login state
-    val loginState by loginViewModel.loginState.collectAsState()
-
     // Input states for username and password
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -46,7 +44,7 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Login",
+                text = "Register",
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp
@@ -85,52 +83,25 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Login button
+            // Register button
             Button(
-                onClick = { loginViewModel.login(username, password) },
+                onClick = { onRegisterSuccess("sample-token") },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF4757))
             ) {
-                Text("Login", color = Color.White, fontWeight = FontWeight.Bold)
+                Text("Register", color = Color.White, fontWeight = FontWeight.Bold)
             }
 
             Spacer(modifier = Modifier.height(15.dp))
 
-            // State-driven UI updates
-            when (loginState) {
-                is LoginState.Idle -> {}
-                is LoginState.Loading -> Text("Logging in...", color = Color.Gray)
-                is LoginState.Success -> {
-                    val token = (loginState as LoginState.Success).token
-                    LaunchedEffect(token) {
-                        onLoginSuccess(token)
-                    }
-                }
-                is LoginState.Error -> Text(
-                    text = (loginState as LoginState.Error).error,
-                    color = Color(0xFF94001B),
-                    fontWeight = FontWeight.Bold
-                )
+            // Back button
+            Button(
+                onClick = onBack,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF5A5A5A))
+            ) {
+                Text("Back", color = Color.White, fontWeight = FontWeight.Bold)
             }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Text(
-                text = "Don't have an account? Register here",
-                style = MaterialTheme.typography.bodyMedium.copy(color = Color(0xFFFF4757)),
-                modifier = Modifier.clickable { onRegisterClick() }
-            )
-        }
-
-        // Back button
-        Button(
-            onClick = onBack,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF5A5A5A))
-        ) {
-            Text("Back", color = Color.White, fontWeight = FontWeight.Bold)
         }
     }
 }

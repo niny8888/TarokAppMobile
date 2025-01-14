@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.tarokapp.ui.theme.RegisterScreen
 import com.example.tarokapp.ui.theme.TarokAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,16 +22,17 @@ class MainActivity : ComponentActivity() {
                 when (currentScreen) {
                     "home" -> HomeScreen(
                         navigateToLogin = { currentScreen = "login" },
-                        navigateToGames = { currentScreen = "games" }
+                        navigateToRules = { currentScreen = "rules" }
                     )
                     "login" -> LoginScreen(
                         onLoginSuccess = { authToken ->
                             token = authToken // Set the token on successful login
                             currentScreen = "account"
                         },
+                        onRegisterClick = { currentScreen = "register" },
                         onBack = { currentScreen = "home" }
                     )
-                    "games" -> GamesScreen(
+                    "rules" -> RulesScreen(
                         onBack = { currentScreen = "home" }
                     )
                     "account" -> AccountScreen(
@@ -39,6 +41,13 @@ class MainActivity : ComponentActivity() {
                             token = null
                             currentScreen = "home"
                         }
+                    )
+                    "register" -> RegisterScreen(
+                        onRegisterSuccess = { authToken ->
+                            token = authToken // Set the token on successful login
+                            currentScreen = "account"
+                        },
+                        onBack = { currentScreen = "login" }
                     )
                 }
             }

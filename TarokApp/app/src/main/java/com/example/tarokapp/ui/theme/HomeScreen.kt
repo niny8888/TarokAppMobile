@@ -14,29 +14,57 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-
-
 @Composable
 fun HomeScreen(
     navigateToLogin: () -> Unit,
-    navigateToGames: () -> Unit
+    navigateToRules: () -> Unit
 ) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        contentAlignment = Alignment.Center
     ) {
-        Text("Welcome to Tarok Game Saver", style = MaterialTheme.typography.titleLarge)
-        Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = navigateToLogin) {
-            Text("Login")
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        Button(onClick = navigateToGames) {
-            Text("Games")
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = Color(0xFFF4F4F9),
+                    shape = MaterialTheme.shapes.medium
+                )
+                .padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Welcome to Tarok Game Saver",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp
+                ),
+                color = Color(0xFF333333)
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // Login Button
+            Button(
+                onClick = navigateToLogin,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF4757))
+            ) {
+                Text("Login", color = Color.White, fontWeight = FontWeight.Bold)
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            // Game Rules Button
+            Button(
+                onClick = navigateToRules,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6C757D))
+            ) {
+                Text("Game Rules", color = Color.White, fontWeight = FontWeight.Bold)
+            }
         }
     }
 }
-
