@@ -1,10 +1,6 @@
 package com.example.tarokapp.ui.theme
 
-import com.example.tarokapp.LoginState
-import com.example.tarokapp.LoginViewModel
-
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -15,8 +11,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(
@@ -26,6 +22,8 @@ fun RegisterScreen(
     // Input states for username and password
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var isRegistering by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier
@@ -85,11 +83,25 @@ fun RegisterScreen(
 
             // Register button
             Button(
-                onClick = { onRegisterSuccess("sample-token") },
+                onClick = {
+                    if (username.isNotBlank() && password.isNotBlank()) {
+                        isRegistering = true
+                        coroutineScope.launch {
+                            delay(3000) // Simulate registration delay
+                            onRegisterSuccess("sample-token") // Call success callback
+                            isRegistering = false
+                        }
+                    }
+                },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF4757))
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF4757)),
+                enabled = !isRegistering
             ) {
-                Text("Register", color = Color.White, fontWeight = FontWeight.Bold)
+                Text(
+                    if (isRegistering) "Registering..." else "Register",
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
             }
 
             Spacer(modifier = Modifier.height(15.dp))

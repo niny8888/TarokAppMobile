@@ -40,6 +40,10 @@ class MainActivity : ComponentActivity() {
                         onLogout = {
                             token = null
                             currentScreen = "home"
+                        },
+                        onBackToHome = {
+                            token = null
+                            currentScreen = "home"
                         }
                     )
                     "register" -> RegisterScreen(
